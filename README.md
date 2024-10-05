@@ -2,9 +2,9 @@
 
 A minimal template for using AUnit in PIO
 
+Must view output from serial for now
+
 ## TODO
 
-- [ ] Make connecting to serial easier
-    - [ ] This might require linking Logic2API to a server or something so you're only using one cable. 
-    - Or you an just jump the cable each time you wanna test it. Even better, you can just make another header on the board or an actual test point
-- [ ] Test that mockstream works of course
+- Turns out the Unity wrapper sucks
+    - [ ] Explore using AUnit by itself, but possibly using the python framework from PIO to scrape the serial output from logic2 api so I can still see the output of tests and stuff
