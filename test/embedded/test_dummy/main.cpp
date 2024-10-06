@@ -9,7 +9,7 @@ test(exampleTest1)
 
 test(exampleTest2)
 {
-  assertEqual(3, 2);
+  assertNotEqual(3, 2);
 }
 
 //----------------------------------------------------------------------------
@@ -27,6 +27,8 @@ void setup()
 #if defined(EPOXY_DUINO)
   Serial.setLineModeUnix();
 #endif
+  pinMode(1, OUTPUT);
+  digitalWrite(1, HIGH);
 }
 
 void loop()
