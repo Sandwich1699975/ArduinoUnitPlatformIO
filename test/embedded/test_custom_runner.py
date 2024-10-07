@@ -1,5 +1,4 @@
 from saleae import automation # This will need to be installed in the pio venv
-# from grpc import _channel
 from platformio.public import TestCase, TestCaseSource, TestStatus, UnityTestRunner
 import os
 import os.path

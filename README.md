@@ -1,8 +1,8 @@
-# AUnit
+# AUnit PlatformIO Integration
 
-A minimal template for using AUnit in PIO
+**My template** for using [AUnit](https://github.com/bxparks/AUnit) in [PlatormIO](https://platformio.org/) with a [logic analyser](https://core-electronics.com.au/usb-logic-analyzer-24mhz-8-channel.html)
 
-Must view output from serial for now
+For those who are looking to implement their own version of AUnit with PIO ... I wish you the best of luck. This was stupidly complex to get working. My method also uses a [physical logic analyser](https://core-electronics.com.au/usb-logic-analyzer-24mhz-8-channel.html) and [Saleae's Logic2 application](https://www.saleae.com/pages/downloads?srsltid=AfmBOop1eoIiGSyJggODsT0lgRuMeX46d3sEPPDvJscgZumQkeUSdmga) for this to work. If you don't have a logic analyser, you will need some sort of way to read the serial data from the board and pipe it into the the [custom test runner](https://docs.platformio.org/en/latest/advanced/unit-testing/frameworks/custom/runner.html) which is located in `test/**/test_custom_runner.py`.
 
 ## Summary
 
