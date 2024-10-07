@@ -17,7 +17,6 @@ def _connect_logic() -> bool:
     # Using the `with` statement will automatically call manager.close() when exiting the scope. If you
     # want to use `automation.Manager` outside of a `with` block, you will need to call `manager.close()` manually.
     with automation.Manager.connect(port=10430) as manager:
-
         # Configuration based on options in the Logic2 UI
         device_configuration = automation.LogicDeviceConfiguration(
             enabled_digital_channels=[0, 1, 2, 3, 4, 5, 6, 7],
@@ -34,7 +33,7 @@ def _connect_logic() -> bool:
             _start_logic_capture(manager, device_configuration,
                                  capture_configuration)
         except automation.errors.MissingDeviceError:
-            print("[ERROR] Logic open, missing device")
+            automation.logger.error("Logic is open, but device is missing")
             return False
         return True
 
@@ -88,12 +87,12 @@ def run_serial_analysis() -> bool:
     """
     try:
         return _connect_logic()
-    except:
+    except Exception:
         # This is a _channel._InactiveRpcError error from the grpc library
         # But I can't get it to work in the venv so this will do for now
         
         # Logic is not open. 
-        print("Logic is not open")
+        automation.logger.error("Logic is not open. Timeout reached")
         return False
 
 
@@ -102,22 +101,13 @@ class CustomTestRunner(UnityTestRunner):
     def setup(self):
         # Setup serial analysis 
         self.LOGIC_BOOT_OK = run_serial_analysis()
+        if not self.LOGIC_BOOT_OK:
+            raise RuntimeError("Error starting Logic2")    
         return super().setup()
     
     def stage_testing(self):
         # 1. Gather test results from Serial, HTTP, Socket, or other sources
         # 2. Report test results (add cases)
-        
-        if self.LOGIC_BOOT_OK == False:
-            # Skip all tests
-            print("[ERROR] Logic 2 error detected")
-            self.test_suite.add_case(
-            TestCase(name="LOGIC2_TESTS",
-                     status=TestStatus.ERRORED, duration=0)
-            )
-            return
-            
-
 
         # Exmaple: Report succeed result with duration (optional)
         self.test_suite.add_case(

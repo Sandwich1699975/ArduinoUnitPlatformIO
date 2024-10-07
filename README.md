@@ -10,6 +10,8 @@ To run a test so far, you can have a test folder and the programmer will flash t
 
 In each test, you are using **just** [AUnit](https://github.com/bxparks/AUnit). This is the methodology and [heirarchy](https://docs.platformio.org/en/latest/advanced/unit-testing/structure/hierarchy.html) for creating tests:
 
+0. Install dependancies
+    - `source ~/.platformio/penv/bin/activate` then  `pip install logic2-automation`
 1. Create a test in a folder prefixed with `test_`
     - This requires a `.cpp` file with the AUnit software that runs all tests in that file with the `aunit::TestRunner::run();` command.
 2. Run the PIO test
