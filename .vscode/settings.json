@@ -1,8 +1,0 @@
-{
-    "python.analysis.extraPaths": [
-        "/Users/freddy/.platformio/penv/lib/python3.11/site-packages/platformio"
-    ],
-    "python.autoComplete.extraPaths": [
-        "/Users/freddy/.platformio/penv/lib/python3.11/site-packages/platformio"
-    ]
-}

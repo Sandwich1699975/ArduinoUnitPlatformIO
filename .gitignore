@@ -7,3 +7,5 @@ serial_data/
 .vscode/ipch
 
 __pycache__/
+
+.vscode/

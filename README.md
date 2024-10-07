@@ -27,6 +27,8 @@ This python file will then connect to your logic analyser software ([Logic2](htt
 
 - Importantly, make a bridge between the logic2 api that automatically scrapes the data from each test and creates test cases from that.
 - Stop the recording once the tests have finished [link](https://saleae.github.io/logic2-automation/automation.html#saleae.automation.CaptureConfiguration) and [method to use](https://saleae.github.io/logic2-automation/automation.html#manualcapturemode). This will have to be done by stopping it manually while parsing when the summary line is detected
+- Try and resolve pylance lint error on platformio imports
+- Test if this works on another computer. The `import saleae` just magically started working for some reason
 
 Example output:
 
