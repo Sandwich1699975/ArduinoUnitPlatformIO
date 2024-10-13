@@ -20,9 +20,13 @@ In each test, you are using **just** [AUnit](https://github.com/bxparks/AUnit). 
 
 This implementation uses a [python handler/runner](https://docs.platformio.org/en/latest/advanced/unit-testing/frameworks/custom/runner.html) which must be called `test_custom_runner.py`. 
 
-This file is the generic bridge to parse the results of each test. PIO will seach each directory and parent directory until it has reached the root of `test_dir`. This means each test can have custom handlers with precedence. At the moment, only a generic one is needed in the `embedded/` folder to handle all those test cases.
+This file is the generic bridge to parse the results of each test. PIO will search each directory and parent directory until it has reached the root of `test_dir`. This means each test can have custom handlers with precedence. At the moment, only a generic one is needed in the `embedded/` folder to handle all those test cases.
 
 This python file will then connect to your logic analyser software ([Logic2](https://saleae.github.io/logic2-automation/index.html)) and create raw and high level ASCII csv analysis files. After those files are created from the logic analyser, the PIO `test_custom_runner.py` will then scrape that output for the AUnit success and failure messages. That data is then formatted with the PIO test cases class and presented in the rich report. 
+
+## Known Limitations 
+
+- This method with the Logic2 API does not run concurrently. The Unity test system and the Logic API are totally disjointed. The recording starts then begins a race condition with the Unity scraper (which sucks). I want to fix this at some point. It's currently not a big issue
 
 ## Todo List
 

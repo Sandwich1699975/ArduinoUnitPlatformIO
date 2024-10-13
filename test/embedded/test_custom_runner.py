@@ -3,7 +3,6 @@ from platformio.public import TestCase, TestCaseSource, TestStatus, UnityTestRun
 import os
 import re
 import csv
-from pprint import pprint
 from typing import Optional, List, Dict
 import os.path
 from datetime import datetime
