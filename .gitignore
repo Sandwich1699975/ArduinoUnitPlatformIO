@@ -9,3 +9,7 @@ serial_data/
 __pycache__/
 
 .vscode/
+
+test/logs/
+
+ArduinoUnitPlugin/
