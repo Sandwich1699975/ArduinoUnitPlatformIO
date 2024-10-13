@@ -8,12 +8,12 @@ Import("env") # type: ignore
 env.Execute("$PYTHONEXE -m pip list") # type: ignore
 
 # Install custom packages from the PyPi registry
-env.Execute("$PYTHONEXE -m pip install saleae") # type: ignore
+env.Execute("$PYTHONEXE -m pip install logic2-automation") # type: ignore
 
 # Install missed package
 try:
     from saleae import automation
 except ImportError:
-    env.Execute("$PYTHONEXE -m pip install saleae") # type: ignore
+    env.Execute("$PYTHONEXE -m pip install logic2-automation") # type: ignore
 # noqa: on 
 # ---------------------- PIO SCRIPTING ----------------------

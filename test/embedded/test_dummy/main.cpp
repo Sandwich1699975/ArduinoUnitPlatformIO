@@ -9,7 +9,12 @@ test(exampleTest1)
 
 test(exampleTest2)
 {
-  assertNotEqual(3, 2);
+  assertNotEqual(3, 3);
+}
+
+test(exampleTest3)
+{
+  assertLess(5, 5);
 }
 
 //----------------------------------------------------------------------------

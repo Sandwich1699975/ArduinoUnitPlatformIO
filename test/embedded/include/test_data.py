@@ -1,12 +1,13 @@
 import os
+import re
 import csv
 from pprint import pprint
+from platformio.public import TestCase, TestCaseSource, TestStatus
 from typing import Optional, List, Dict
 
 
 def find_last_modified_test_dir() -> Optional[str]:
-    """_summary_
-    Finds the last modified directory in the 'test/logs' folder.
+    """Finds the last modified directory in the 'test/logs' folder.
 
     Returns:
         Optional[str]: The path of the last modified directory, 
@@ -31,7 +32,7 @@ def find_last_modified_test_dir() -> Optional[str]:
     return last_modified_dir
 
 def get_timestamped_lines() -> Optional[List[Dict[str, float]]]:
-    """_summary_
+    """Get all lines from csv and timestamp the time the last byte was recieved
 
     Returns:
         list[dict]: A list of dictionaries with line contents and duration
@@ -82,14 +83,125 @@ def get_timestamped_lines() -> Optional[List[Dict[str, float]]]:
                 current_line_timestamp = float(row[START_TIME_COL])
                 timestamped_lines.append({
                     "line":current_line,
-                    "duration":current_line_timestamp-last_line_timestamp
+                    "fall_timestamp":current_line_timestamp
                     })
                 last_line_timestamp = current_line_timestamp
                 current_line = ""
                 last_newline = True
     return timestamped_lines
-             
+
+def _get_index_of_last_result_line(
+    timestamped_lines:Optional[List[Dict[str, float]]],
+    line_index:int
+    ):
+    """Gets the index of the last result line.
+    A result line is in the form `Test\s(\w+)\s(passed|failed)`
+
+    Args:
+        timestamped_lines (Optional[List[Dict[str, float]]]): Lines from `get_timestamped_lines()`
+        line_index (int): Index of current line to search backwards from.
+    """
+    REGEX = r"Test\s(\w+)\s(passed|failed)"
+    
+    while not re.match(REGEX, timestamped_lines[line_index]):
+        line_index -= 1
+    return  line_index
+
+def _parse_failure_line(line_text: str) -> Optional[dict[str,str]]:
+    # Regex to read the line of a failed test
+    # Using "AUnitPlatformIO.ino:12: Assertion failed: (3) != (3)."
+    # Group 1: File | Example: "AUnitPlatformIO.ino"
+    # Group 2: Line | Example: "12"
+    # Group 3: Message | Example: "Assertion failed: (3) != (3)."
+    FAILURE_REGEX = r"(\w+.(?:cpp|ino)):(\d+):\s(.+)"
+    match = re.match(FAILURE_REGEX, line_text)
+    if match == None:
+        return None
+    return {
+        "file": match.group(1),
+        "line": match.group(2),
+        "message": match.group(3),
+    }
+
+def _generate_test_case(
+    timestamped_lines:Optional[List[Dict[str, float]]],
+    re_match:re.Match,
+    line_index:int
+    ):
+    # Example: timestamped_lines
+    
+    # {'duration': 0.858, 'line': 'TestRunner started on 2 test(s).'},
+    # {'duration': 0.002, 'line': 'Test exampleTest1 passed.'},
+    # {'duration': 0.004, 'line': 'AUnitPlatformIO.ino:12: Assertion failed: (3) != (3).'},
+    # {'duration': 0.002, 'line': 'Test exampleTest2 failed.'},
+    # {'duration': 0.003, 'line': 'TestRunner duration: 0.010 seconds.'},
+    # {'duration': 0.007,
+    # 'line': 'TestRunner summary: 1 passed, 1 failed, 0 skipped, 0 timed out, out '
+    #         'of 2 test(s).'}
+    
+    # Example: timestamped_lines in text form only
+    
+    # TestRunner started on 2 test(s).
+    # Test exampleTest1 passed.
+    # AUnitPlatformIO.ino:12: Assertion failed: (3) != (3).
+    # Test exampleTest2 failed.
+    # TestRunner duration: 0.010 seconds.
+    # TestRunner summary: 1 passed, 1 failed, 0 skipped, 0 timed out, out 
+
+    text_status = re_match.group(2)
+    case_test_name = re_match.group(1)
+    match text_status:
+        case "passed":
+            # Duration of a test that passed is the difference of duration of 
+            # the sucess messsage the end of the last message
+            case_duration = \
+                  timestamped_lines[line_index]["fall_timestamp"] \
+                - timestamped_lines[line_index-1]["fall_timestamp"]
+            case_status = TestStatus.PASSED
+            test_case = TestCase(
+                name=case_test_name,
+                status=case_status,
+                duration=0.69 #TODO implement duration 
+            )
+        case "failed":
+            case_status = TestStatus.FAILED
+            # TODO Implement a scanner and compiler using _get_index_of_last_result_line
+            # To find multiple assertions if you use them. For now, assume line_index-1
+            parsed_line = _parse_failure_line(
+                timestamped_lines[line_index-1]["line"]
+            )
+            if parsed_line == None:
+                raise Exception("Line incorrectly parsed")
+            test_case = TestCase(
+                name=case_test_name,
+                status=case_status,
+                message=parsed_line["message"],
+                stdout=timestamped_lines[line_index-1]["line"],
+                duration=0.69,
+                source=TestCaseSource(
+                    filename=parsed_line["file"], line=parsed_line["line"]
+                ),
+            )
+        case _: 
+            print("Unexpected case_status")
+
+    return test_case
+        
+        
+
+def create_all_test_cases() -> List[TestCase]:
+    test_cases = []
+    timestamped_lines = get_timestamped_lines()
+    
+    for index, line in enumerate(timestamped_lines):
+        if re_match := re.match(r"Test\s(\w+)\s(passed|failed)",line["line"]):
+            test_cases.append(_generate_test_case(timestamped_lines, re_match, index))
+        
+    return test_cases
 
 if __name__ == "__main__":
-    # Now create a bunch of test objects using `ArduinoUnitTest.py`
-    pprint(get_timestamped_lines())
+    # Now create a bunch of test objects using `platformio.public.TestCase`
+    # pprint(get_timestamped_lines())
+    test_cases = create_all_test_cases()
+    print(x["line"]+'\n' for x in get_timestamped_lines())
+    pass
