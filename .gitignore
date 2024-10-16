@@ -12,4 +12,7 @@ __pycache__/
 
 test/logs/
 
-ArduinoUnitPlugin/
+# Development file 
+test/embedded/test_data.py
+
+.DS_Store  
