@@ -1,0 +1,38 @@
+{
+    "build": {
+        "f_cpu": "240000000L",
+        "f_flash": "80000000L",
+        "hwids": [
+            [
+                "0x303A",
+                "0x0002"
+            ]
+        ],
+        "core": "esp32",
+        "extra_flags": "-DARDUINO_ESP32S2_DEV",
+        "flash_mode": "qio",
+        "mcu": "esp32s2",
+        "variant": "esp32s2"
+    },
+    "debug": {
+        "openocd_target": "esp32s2.cfg"
+    },
+    "frameworks": [
+        "arduino",
+        "espidf"
+    ],
+    "name": "ESP32-S2-SOLO-2-N4",
+    "upload": {
+        "flash_size": "4MB",
+        "maximum_ram_size": 327680,
+        "maximum_size": 4194304,
+        "require_upload_port": true,
+        "speed": 460800
+    },
+    "pins": {
+        "LED_BUILTIN": "1",
+        "LED_BUILTIN_2": "2"
+    },
+    "url": "https://www.espressif.com/sites/default/files/documentation/esp32-s2-solo-2_esp32-s2-solo-2u_datasheet_en.pdf",
+    "vendor": "Espressif"
+}
