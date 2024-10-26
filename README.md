@@ -2,6 +2,8 @@
 
 **My template** for using [AUnit](https://github.com/bxparks/AUnit) in [PlatformIO](https://platformio.org/) with a [logic analyser](https://core-electronics.com.au/usb-logic-analyzer-24mhz-8-channel.html) and with a custom ESP-32S2 based board.
 
+![Annotated hardware setup](assets/setup.png)
+
 For those looking to implement their own version of AUnit with PlatformIO, I wish you the best of luck. This was incredibly complex to get working. My method also uses a [physical logic analyser](https://core-electronics.com.au/usb-logic-analyzer-24mhz-8-channel.html) and [Saleae's Logic2 application](https://www.saleae.com/pages/downloads?srsltid=AfmBOop1eoIiGSyJggODsT0lgRuMeX46d3sEPPDvJscgZumQkeUSdmga) to make this work well with: physical testing, software compatability and development. If you don't have a logic analyser, you will need some sort of way to read the serial data from the board and pipe it into the the [custom test runner](https://docs.platformio.org/en/latest/advanced/unit-testing/frameworks/custom/runner.html) which is located in `test/**/test_custom_runner.py`.
 
 ## Summary
@@ -29,6 +31,13 @@ This Python file will then connect to your logic analyser software ([Logic2](htt
 - This method with the Logic2 API does not run concurrently. The Unity test system and the Logic API are totally disjointed. The recording starts then begins a race condition with the Unity scraper (which sucks). This seems to require a rebuild of the API or some sort of custom local hosted server to fix this. It's currently not a big issue and does not warrant a change this big. A simple delay on the Python or hardware side can account for timing issues if needed.
     - Due to the race condition, ESP boot messages over serial are not accounted for because they are consisitenly skipped by timeout anyway
 - Some `TestCase` attributes are not printing. I can't see `message` or `TestCaseSource` for some reason
+
+## Troubleshooting
+
+**Getting import errors**
+
+- Make sure you have installed the python dependancies as listed in the summary section above. 
+- Make sure your python interpreter is selected as `~/.platformio/penv/bin/python`.
 
 ## Todo List
 
