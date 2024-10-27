@@ -34,6 +34,12 @@ class TestParser:
 
         return last_modified_dir
 
+    @staticmethod
+    def _save_summary(timestamped_lines: List[Dict[str, float]], LATEST_LOG_PATH: str) -> None:
+        SUMMARY_NAME = "summary.txt"
+        with open(os.path.join(LATEST_LOG_PATH, SUMMARY_NAME), 'w') as w:
+            w.write("\n".join(x["line"] for x in timestamped_lines))
+
     def get_timestamped_lines(self) -> Optional[List[Dict[str, float]]]:
         """Get all lines from csv and timestamp the time the last byte was recieved
 
@@ -91,6 +97,8 @@ class TestParser:
                     last_line_timestamp = current_line_timestamp
                     current_line = ""
                     last_newline = True
+        
+        self._save_summary(timestamped_lines, LATEST_LOG_PATH)
         return timestamped_lines
 
     def _get_index_of_last_result_line(
@@ -112,13 +120,22 @@ class TestParser:
         return line_index
 
     def _parse_failure_line(self, line_text: str) -> Optional[dict[str, str]]:
+        """Returns a dictionary parsing a line with an AUnit failure message.
+
+
+        Args:
+            line_text (str): The line containing the failure message
+
+        Returns:
+            Optional[dict[str, str]]: `file`, `line`, `message` keys from failure
+        """
         # Regex to read the line of a failed test
         # Using "AUnitPlatformIO.ino:12: Assertion failed: (3) != (3)."
         # Group 1: File | Example: "AUnitPlatformIO.ino"
         # Group 2: Line | Example: "12"
         # Group 3: Message | Example: "Assertion failed: (3) != (3)."
         FAILURE_REGEX = r"(\w+.(?:cpp|ino)):(\d+):\s(.+)"
-        match = re.match(FAILURE_REGEX, line_text)
+        match = re.search(FAILURE_REGEX, line_text)
         if match == None:
             return None
         return {
@@ -172,16 +189,17 @@ class TestParser:
                 case_status = TestStatus.FAILED
                 # TODO Implement a scanner and compiler using _get_index_of_last_result_line
                 # To find multiple assertions if you use them. For now, assume line_index-1
-                parsed_line = self._parse_failure_line(
-                    timestamped_lines[line_index-1]["line"]
-                )
+                line_to_parse = timestamped_lines[line_index-1]["line"]
+                parsed_line = self._parse_failure_line(line_to_parse)
                 if parsed_line == None:
-                    raise Exception("Line incorrectly parsed")
+                    raise Exception(
+                        f"Line incorrectly parsed:\n> \"\"\"{line_to_parse}\"\"\""
+                    )
                 test_case = TestCase(
                     name=case_test_name,
                     status=case_status,
                     message=parsed_line["message"],
-                    stdout=timestamped_lines[line_index-1]["line"],
+                    stdout=line_to_parse,
                     duration=0.69,
                     source=TestCaseSource(
                         filename=parsed_line["file"], line=parsed_line["line"]
