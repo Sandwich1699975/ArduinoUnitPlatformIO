@@ -14,6 +14,8 @@ test(exampleTest2)
 
 test(exampleTest3)
 {
+  Serial.print("Serial output prefixed with no newline");
+  // Serial.println("Serial output on own line");
   assertLess(5, 5);
 }
 
