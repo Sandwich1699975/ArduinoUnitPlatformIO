@@ -6,10 +6,6 @@ Import("env")
 
 print("Running python prerequisites")
 
-# Add include folder to python path
-env.Execute(
-    f'export PYTHONPATH="{os.path.join("$PROJECT_DIR", "test", "embedded","include")}:$PYTHONPATH')
-
 # List installed packages
 env.Execute("$PYTHONEXE -m pip list")
 
