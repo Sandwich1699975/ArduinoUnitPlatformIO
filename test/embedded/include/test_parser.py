@@ -193,13 +193,15 @@ class TestParser:
                 parsed_line = self._parse_failure_line(line_to_parse)
                 if parsed_line == None:
                     raise Exception(
-                        f"Line incorrectly parsed:\n> \"\"\"{line_to_parse}\"\"\""
+                        f"Line incorrectly parsed:\n>{line_to_parse}"
                     )
+                message_text = parsed_line['message'].rstrip('\n')
+                std_out_text = line_to_parse.rstrip('\n')
                 test_case = TestCase(
                     name=case_test_name,
                     status=case_status,
-                    message=parsed_line["message"],
-                    stdout=line_to_parse,
+                    message=f"MESSAGE - {case_test_name}: {message_text}",
+                    stdout=f"STDOUT - {case_test_name}: {std_out_text}",
                     duration=0.69,
                     source=TestCaseSource(
                         filename=parsed_line["file"], line=parsed_line["line"]
