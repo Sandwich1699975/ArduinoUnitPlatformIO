@@ -8,6 +8,7 @@ from platformio.public import TestCase, TestCaseSource, TestStatus
 class TestParser:
     """Generates Unity TestCase objects for PlatformIO
     """
+    TEST_REGEX = r"Test\s(\w+)\s(passed|failed)"
 
     def find_last_modified_test_dir(self) -> Optional[str]:
         """Finds the last modified directory in the 'test/logs' folder.
@@ -113,9 +114,9 @@ class TestParser:
             timestamped_lines (Optional[List[Dict[str, float]]]): Lines from `get_timestamped_lines()`
             line_index (int): Index of current line to search backwards from.
         """
-        REGEX = r"Test\s(\w+)\s(passed|failed)"
 
-        while not re.match(REGEX, timestamped_lines[line_index]):
+
+        while not re.match(TestParser.TEST_REGEX, timestamped_lines[line_index]):
             line_index -= 1
         return line_index
 
@@ -217,7 +218,7 @@ class TestParser:
         timestamped_lines = self.get_timestamped_lines()
 
         for index, line in enumerate(timestamped_lines):
-            if re_match := re.match(r"Test\s(\w+)\s(passed|failed)", line["line"]):
+            if re_match := re.search(TestParser.TEST_REGEX, line["line"]):
                 test_cases.append(self._generate_test_case(
                     timestamped_lines, re_match, index))
 
