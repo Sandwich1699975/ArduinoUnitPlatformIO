@@ -2,7 +2,9 @@
 
 **My template** for using [AUnit](https://github.com/bxparks/AUnit) in [PlatformIO](https://platformio.org/) with a [logic analyser](https://core-electronics.com.au/usb-logic-analyzer-24mhz-8-channel.html) and with a custom ESP-32S2 based board.
 
-![Annotated hardware setup](assets/setup.png)
+<p align="center">
+    <img src="assets/setup.png" alt="Annotated hardware setup" width="300">
+</p>
 
 For those looking to implement their own version of AUnit with PlatformIO, I wish you the best of luck. This was incredibly complex to get working. My method also uses a [physical logic analyser](https://core-electronics.com.au/usb-logic-analyzer-24mhz-8-channel.html) and [Saleae's Logic2 application](https://www.saleae.com/pages/downloads?srsltid=AfmBOop1eoIiGSyJggODsT0lgRuMeX46d3sEPPDvJscgZumQkeUSdmga) to make this work well with: physical testing, software compatability and development. If you don't have a logic analyser, you will need some sort of way to read the serial data from the board and pipe it into the the [custom test runner](https://docs.platformio.org/en/latest/advanced/unit-testing/frameworks/custom/runner.html) which is located in `test/**/test_custom_runner.py`.
 
