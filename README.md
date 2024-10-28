@@ -3,7 +3,8 @@
 **My template** for using [`arduinounit`](https://github.com/mmurdoch/arduinounit) in [PlatformIO](https://platformio.org/) with a [logic analyser](https://core-electronics.com.au/usb-logic-analyzer-24mhz-8-channel.html) and with a custom ESP-32S2 based board.
 
 > [!NOTE]  
-> This repo was originally for [`AUnit`](https://github.com/bxparks/AUnit) but I needed `MockStream` so I converted to ArdunioUnit.
+> This repo was originally for [`AUnit`](https://github.com/bxparks/AUnit) but I needed the `MockStream` object so I converted to ArdunioUnit.
+> **If you want to use `AUnit`, you see see their tutorial on migrating from ArduinoUnit [here](https://github.com/bxparks/AUnit?tab=readme-ov-file#ArduinoUnitCompatible)**
 
 <p align="center">
     <img src="assets/setup.png" alt="Annotated hardware setup" width="300">
