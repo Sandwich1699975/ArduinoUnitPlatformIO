@@ -16,6 +16,7 @@ class CustomTestRunner(UnityTestRunner):
 
     def stage_testing(self):
         # 1. Gather test results from Serial, HTTP, Socket, or other sources
+        print("Starting logic")
         logic = LogicAnalyser();
         # Setup serial analysis
         self.LOGIC_BOOT_OK = logic.start_serial_analysis()

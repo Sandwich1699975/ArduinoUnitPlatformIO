@@ -1,22 +1,38 @@
-#line 2 "AUnitPlatformIO.ino"
-
-#include <AUnit.h>
+#line 2 "main.cpp"
+#include <ArduinoUnit.h>
 
 test(exampleTest1)
 {
+  Serial.println("Dummy test 1");
   assertEqual(3, 3);
+}
+
+void square(Stream &io)
+{
+  io.print("value? ");
+  int x = io.parseInt();
+  io.print(x);
+  io.print("*");
+  io.print(x);
+  io.print("=");
+  io.println(x * x);
 }
 
 test(exampleTest2)
 {
-  assertNotEqual(3, 3);
+  MockStream ms;
+  ms.input.print(10);
+  square(ms);
+  Serial.print("MOCK_OUTPUT: ");
+  Serial.println(ms.output);
+  assertEqual(ms.output, "value? 10*10=100\r\n");
 }
 
 test(exampleTest3)
 {
   Serial.print("Serial output prefixed with no newline");
   // Serial.println("Serial output on own line");
-  assertLess(5, 5);
+  assertEqual(5, 5);
 }
 
 //----------------------------------------------------------------------------
@@ -25,20 +41,14 @@ test(exampleTest3)
 
 void setup()
 {
-#if !defined(EPOXY_DUINO)
-  delay(1000); // wait for stability on some boards to prevent garbage Serial
-#endif
-  Serial.begin(115200); // ESP8266 default of 74880 not supported on Linux
+  Serial.begin(115200);
   while (!Serial)
-    ; // for the Arduino Leonardo/Micro only
-#if defined(EPOXY_DUINO)
-  Serial.setLineModeUnix();
-#endif
-  pinMode(1, OUTPUT);
-  digitalWrite(1, HIGH);
+  {
+  } // Portability for Leonardo/Micro
+  delay(2000); // Delay to wait for logic to startup
 }
 
 void loop()
 {
-  aunit::TestRunner::run();
+  Test::run();
 }
