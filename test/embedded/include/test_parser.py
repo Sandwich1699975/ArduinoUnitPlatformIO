@@ -221,5 +221,8 @@ class TestParser:
             if re_match := re.search(TestParser.TEST_REGEX, line["line"]):
                 test_cases.append(self._generate_test_case(
                     timestamped_lines, re_match, index))
+        # TODO Make a check that checks the last line to make sure that the
+        # amount of tests the code found matches the amount in the test cases
+        # list. 
 
         return test_cases

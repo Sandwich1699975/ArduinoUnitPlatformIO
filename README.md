@@ -1,6 +1,6 @@
-# AUnit PlatformIO Integration
+# ArduinoUnit PlatformIO Integration
 
-**My template** for using [AUnit](https://github.com/bxparks/AUnit) in [PlatformIO](https://platformio.org/) with a [logic analyser](https://core-electronics.com.au/usb-logic-analyzer-24mhz-8-channel.html) and with a custom ESP-32S2 based board.
+**My template** for using [`arduinounit`](https://github.com/mmurdoch/arduinounit) in [PlatformIO](https://platformio.org/) with a [logic analyser](https://core-electronics.com.au/usb-logic-analyzer-24mhz-8-channel.html) and with a custom ESP-32S2 based board.
 
 <p align="center">
     <img src="assets/setup.png" alt="Annotated hardware setup" width="300">
@@ -40,6 +40,10 @@ This Python file will then connect to your logic analyser software ([Logic2](htt
 
 - Make sure you have installed the python dependencies as listed in the summary section above. 
 - Make sure your python interpreter is selected as `~/.platformio/penv/bin/python`.
+
+**No test cases or no summary file**
+
+- Make sure baud rate is correct
 
 ## Todo List
 
