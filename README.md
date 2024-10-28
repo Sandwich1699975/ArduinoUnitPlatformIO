@@ -4,7 +4,7 @@
 
 > [!NOTE]  
 > This repo was originally for [`AUnit`](https://github.com/bxparks/AUnit) but I needed the `MockStream` object so I converted to ArdunioUnit.
-> **If you want to use `AUnit`, you see see their tutorial on migrating from ArduinoUnit [here](https://github.com/bxparks/AUnit?tab=readme-ov-file#ArduinoUnitCompatible)**
+> **If you want to use `AUnit`, you see see their tutorial on migrating from ArduinoUnit [here](https://github.com/bxparks/AUnit?tab=readme-ov-file#ArduinoUnitCompatible)** or see the minimal changes I made myself in [#1](https://github.com/Sandwich1699975/AUnitPlatformIO/pull/1)
 
 <p align="center">
     <img src="assets/setup.png" alt="Annotated hardware setup" width="300">
