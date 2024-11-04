@@ -7,13 +7,17 @@
 > **If you want to use `AUnit`, you see see their tutorial on migrating from ArduinoUnit [here](https://github.com/bxparks/AUnit?tab=readme-ov-file#ArduinoUnitCompatible)** or see the minimal changes I made myself in [#1](https://github.com/Sandwich1699975/AUnitPlatformIO/pull/1)
 
 <div align="center">
-    <table>
+    <table style="margin: 0 auto;">
         <tr>
-            <td>
+            <td style="text-align: center;">
                 <img src="assets/setup.png" alt="Annotated hardware setup" width="300">
+                <br>
+                Annotated hardware setup
             </td>
-            <td>
+            <td style="text-align: center;">
                 <img src="assets/flowchart.png" alt="System flowchart" width="500">
+                <br>
+                System flowchart
             </td>
         </tr>
     </table>
